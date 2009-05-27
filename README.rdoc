@@ -1,0 +1,52 @@
+= Xapit Reloader
+
+IMPORTANT: This project is currently vaporware.
+
+For an alternative solution (also currently vaporware) see Xapit Proxy.
+
+http://github.com/ryanb/xapit-proxy/tree/master
+
+
+== Xapit
+
+Xapit is a Ruby library for interacting with Xapian, a full-text search engine.
+
+http://github.com/ryanb/xapit/tree/master
+
+
+== How it Works
+
+Xapit Reloader is a Rails plugin designed to update only the Xapian records which have changed and then reload the database automatically.
+
+An observer is automatically attached to each Xapian member (model). Each time a model is created, updated, or destroyed it will record that change in a separate database table.
+
+A separate process will spawn which updates the Xapian database with all changes recorded in the separate table. Everything it needs is in the table so it does not have to launch the Rails environment. This results in a lightweight process that can spawn frequently.
+
+At the end of this process it will trigger a Rails controller/action which is included in the plugin (using Rails metal and/or engines). This will notify the Rails application that the Xapian database needs to be reloaded.
+
+
+== Performance
+
+If the application frequently updates models then launching a separate process each time to update the Xapian database will lead to poor performance.
+
+To solve this problem the process will automatically wait for one minute after updating the Xapian database to look for more records which need updating before closing and sending the reload request. If a model is changed during this time it will not need to launch a separate process.
+
+Alternatively, you could tap into a separate queuing system (such as delayed_job) and use that.
+  
+  class XapitReloadJob
+    def perform
+      XapitReloader.update_and_reload
+    end
+  end
+
+  # in config/initializers/setup_xapit.rb
+  XapitReloader.after_record_change do
+    Delayed::Job.enqueue XapitReloadJob.new
+  end
+
+
+== Setup
+
+To get started, all you must do is install this plugin and run the migrations. This will create the separate table used to keep track of the model changes.
+
+You will also need to configure what Rails processes to send the reload request to. I'm not yet certain how best to do this.
