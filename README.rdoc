@@ -1,10 +1,10 @@
-= Xapit Reloader
+= Xapit Sync
 
 IMPORTANT: This project is currently vaporware.
 
-For an alternative solution (also currently vaporware) see Xapit Proxy.
+For an alternative solution (also currently vaporware) see Xapit Server.
 
-http://github.com/ryanb/xapit-proxy/tree/master
+http://github.com/ryanb/xapit-server/tree/master
 
 
 == Xapit
@@ -16,7 +16,7 @@ http://github.com/ryanb/xapit/tree/master
 
 == How it Works
 
-Xapit Reloader is a Rails plugin designed to update only the Xapian records which have changed and then reload the database automatically.
+Xapit Sync is a Rails plugin designed to update only the Xapian records which have changed and then reload the database automatically.
 
 An observer is automatically attached to each Xapian member (model). Each time a model is created, updated, or destroyed it will record that change in a separate database table.
 
@@ -33,15 +33,15 @@ To solve this problem the process will automatically wait for one minute after u
 
 Alternatively, you could tap into a separate queuing system (such as delayed_job) and use that.
   
-  class XapitReloadJob
+  class XapitSyncJob
     def perform
-      XapitReloader.update_and_reload
+      XapitSync.sync
     end
   end
 
   # in config/initializers/setup_xapit.rb
-  XapitReloader.after_record_change do
-    Delayed::Job.enqueue XapitReloadJob.new
+  XapitSync.after_record_change do
+    Delayed::Job.enqueue XapitSyncJob.new
   end
 
 
