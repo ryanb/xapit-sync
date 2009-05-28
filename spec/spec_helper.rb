@@ -20,6 +20,7 @@ class Recipe < ActiveRecord::Base
     index.text :name
     index.field :name
     index.facet :name
+    index.sortable :name
   end
   include XapitSync::Membership # TODO this should happen automatically in xapit
 end

@@ -1,8 +1,12 @@
 module XapitSync
   module Membership
     def self.included(base)
-      base.after_save do |record|
-        XapitChange.create!(:target_class => record.class.name)
+      base.after_create do |record|
+        XapitChange.create!(
+          :target_class => record.class.name,
+          :target_id => record.id,
+          :operation => "create"
+        )
       end
     end
   end
