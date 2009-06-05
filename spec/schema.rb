@@ -8,6 +8,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string "target_class"
     t.integer "target_id"
     t.string "operation"
+    t.text "index_attributes"
   end
 
 end

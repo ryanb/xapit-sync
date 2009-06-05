@@ -8,5 +8,10 @@ describe Recipe do
     change.target_class.should == "Recipe"
     change.target_id.should == recipe.id
     change.operation.should == "create"
+    change.index_attributes.should == recipe.xapit_index_attributes
+  end
+  
+  it "should have a hash of all attributes which are for indexing" do
+    Recipe.new(:name => "foo").xapit_index_attributes.should == { :id => nil, :name => "foo" }
   end
 end
