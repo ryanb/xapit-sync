@@ -21,6 +21,15 @@ module XapitSync
           :index_blueprint => record.class.xapit_index_blueprint
         )
       end
+      
+      # TODO some duplication with after_create callback
+      base.after_destroy do |record|
+        XapitChange.create!(
+          :target_class => record.class.name,
+          :target_id => record.id,
+          :operation => "destroy"
+        )
+      end
     end
     
     def xapit_index_attributes
