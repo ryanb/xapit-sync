@@ -9,6 +9,7 @@ describe Recipe do
     change.target_id.should == recipe.id
     change.operation.should == "create"
     change.index_attributes.should == recipe.xapit_index_attributes
+    change.index_blueprint.text_attributes.should == recipe.class.xapit_index_blueprint.text_attributes
   end
   
   it "should have a hash of all attributes which are for indexing" do

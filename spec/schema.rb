@@ -9,6 +9,7 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer "target_id"
     t.string "operation"
     t.text "index_attributes"
+    t.binary "index_blueprint_data"
   end
 
 end

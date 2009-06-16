@@ -6,7 +6,8 @@ module XapitSync
           :target_class => record.class.name,
           :target_id => record.id,
           :operation => "create",
-          :index_attributes => record.xapit_index_attributes
+          :index_attributes => record.xapit_index_attributes,
+          :index_blueprint => record.class.xapit_index_blueprint
         )
       end
     end
