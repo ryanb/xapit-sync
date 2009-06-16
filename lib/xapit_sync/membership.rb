@@ -10,6 +10,17 @@ module XapitSync
           :index_blueprint => record.class.xapit_index_blueprint
         )
       end
+      
+      # TODO some duplication with after_create callback
+      base.after_update do |record|
+        XapitChange.create!(
+          :target_class => record.class.name,
+          :target_id => record.id,
+          :operation => "update",
+          :index_attributes => record.xapit_index_attributes,
+          :index_blueprint => record.class.xapit_index_blueprint
+        )
+      end
     end
     
     def xapit_index_attributes
