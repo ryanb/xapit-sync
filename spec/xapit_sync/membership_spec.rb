@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Recipe do
   before(:each) do
-    # we don't want to trigger the xapitsync command with these
+    # we don't want to trigger the sync process with these
     XapitSync.after_record_change { }
   end
   
@@ -13,8 +13,6 @@ describe Recipe do
     change.target_class.should == "Recipe"
     change.target_id.should == recipe.id
     change.operation.should == "create"
-    change.index_attributes.should == recipe.xapit_index_attributes
-    change.index_blueprint.text_attributes.should == recipe.class.xapit_index_blueprint.text_attributes
   end
   
   it "should make xapit change when updated" do
@@ -25,8 +23,6 @@ describe Recipe do
     change.target_class.should == "Recipe"
     change.target_id.should == recipe.id
     change.operation.should == "update"
-    change.index_attributes.should == recipe.xapit_index_attributes
-    change.index_blueprint.text_attributes.should == recipe.class.xapit_index_blueprint.text_attributes
   end
   
   it "should make xapit change when destroyed" do
@@ -37,8 +33,6 @@ describe Recipe do
     change.target_class.should == "Recipe"
     change.target_id.should == recipe.id
     change.operation.should == "destroy"
-    change.index_attributes.should be_nil
-    change.index_blueprint.should be_nil
   end
   
   it "should have a hash of all attributes which are for indexing" do
