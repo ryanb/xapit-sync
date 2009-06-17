@@ -41,7 +41,8 @@ describe XapitSync::Indexer do
     recipe = Recipe.create!(:name => "foo")
     mock(Recipe.xapit_index_blueprint).create_record(recipe)
     indexer = XapitSync::Indexer.new
-    indexer.index_changes(0)
+    mock(indexer).sleep(5)
+    indexer.index_changes(5)
     XapitChange.count.should == 0
   end
 end
