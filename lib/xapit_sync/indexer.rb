@@ -1,5 +1,5 @@
 module XapitSync
-  class Processor
+  class Indexer
     def run(delay)
       
     end
