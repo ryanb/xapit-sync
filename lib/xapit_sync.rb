@@ -1,6 +1,7 @@
 $:.unshift(File.dirname(__FILE__))
 require 'xapit_sync/membership'
 require 'xapit_sync/xapit_change'
+require 'xapit_sync/processor'
 
 module XapitSync
   def self.after_record_change(&block)
