@@ -40,7 +40,7 @@ Alternatively, you could tap into a separate queuing system (such as delayed_job
   end
 
   # in config/initializers/setup_xapit.rb
-  XapitSync.after_record_change do
+  XapitSync.override_syncing do
     Delayed::Job.enqueue XapitSyncJob.new
   end
 

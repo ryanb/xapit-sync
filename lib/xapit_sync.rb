@@ -4,20 +4,20 @@ require 'xapit_sync/xapit_change'
 require 'xapit_sync/indexer'
 
 module XapitSync
-  def self.after_record_change(&block)
-    @after_record_change_proc = block
+  def self.override_syncing(&block)
+    @syncing_proc = block
   end
   
-  def self.call_after_record_change(change)
-    if @after_record_change_proc
-      @after_record_change_proc.call(change)
+  def self.start_syncing
+    if @syncing_proc
+      @syncing_proc.call
     else
       system("#{Rails.root}/script/runner -e #{Rails.env} 'XapitSync.sync(3.minutes)'")
     end
   end
   
-  def self.reset_after_record_change
-    @after_record_change_proc = nil
+  def self.reset_syncing
+    @syncing_proc = nil
   end
   
   def self.sync(delay = 0)

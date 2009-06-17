@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe XapitSync::Indexer do
   before(:each) do
     # we don't want to trigger the sync process with these
-    XapitSync.after_record_change { }
+    XapitSync.override_syncing { }
   end
   
   it "should have path to pid file" do
