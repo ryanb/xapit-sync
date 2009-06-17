@@ -21,4 +21,27 @@ describe XapitSync::Indexer do
     mock(File).exist?("/pid/path") { true }
     XapitSync::Indexer.should be_running
   end
+  
+  it "should raise an exception when attempting to run when already running" do
+    stub(XapitSync::Indexer).running? true
+    lambda { XapitSync::Indexer.new.run(0) }.should raise_error
+  end
+  
+  it "should create and delete pid file when run" do
+    stub(XapitSync::Indexer).pid_path { "/pid/path" }
+    indexer = XapitSync::Indexer.new
+    mock(File).open("/pid/path", "w")
+    mock(indexer).index_changes(123)
+    mock(File).delete("/pid/path")
+    indexer.run(123)
+  end
+  
+  it "should loop through all changes and index each of them" do
+    XapitChange.delete_all
+    recipe = Recipe.create!(:name => "foo")
+    mock(Recipe.xapit_index_blueprint).create_record(recipe)
+    indexer = XapitSync::Indexer.new
+    indexer.index_changes(0)
+    XapitChange.count.should == 0
+  end
 end

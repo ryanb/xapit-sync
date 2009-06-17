@@ -15,4 +15,10 @@ describe XapitChange do
     XapitChange.create!
     @syncing.should be_false
   end
+  
+  it "should fetch target from class/id" do
+    XapitChange.delete_all
+    recipe = Recipe.create!
+    XapitChange.first.target.should == recipe
+  end
 end
