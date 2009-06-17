@@ -11,7 +11,7 @@ module XapitSync
     if @after_record_change_proc
       @after_record_change_proc.call(change)
     else
-      system("#{Rails.root}/script/runner 'XapitSync.sync(3.minutes)'")
+      system("#{Rails.root}/script/runner -e #{Rails.env} 'XapitSync.sync(3.minutes)'")
     end
   end
   

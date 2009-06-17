@@ -8,7 +8,8 @@ describe XapitSync do
   it "should trigger xapitsync command" do
     Rails = Class.new
     stub(Rails).root { "/rails/root" }
-    mock(XapitSync).system("#{Rails.root}/script/runner 'XapitSync.sync(3.minutes)'")
+    stub(Rails).env { "foobar" }
+    mock(XapitSync).system("#{Rails.root}/script/runner -e foobar 'XapitSync.sync(3.minutes)'")
     XapitSync.call_after_record_change(nil)
   end
 end
