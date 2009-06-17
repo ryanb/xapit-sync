@@ -34,8 +34,4 @@ describe Recipe do
     change.target_id.should == recipe.id
     change.operation.should == "destroy"
   end
-  
-  it "should have a hash of all attributes which are for indexing" do
-    Recipe.new(:name => "foo").xapit_index_attributes.should == { :id => nil, :name => "foo" }
-  end
 end
