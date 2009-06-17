@@ -9,7 +9,7 @@ describe XapitSync do
     Rails = Class.new unless defined? Rails
     stub(Rails).root { "/rails/root" }
     stub(Rails).env { "foobar" }
-    mock(XapitSync).system("#{Rails.root}/script/runner -e foobar 'XapitSync.sync(3.minutes)'")
+    mock(XapitSync).system("#{Rails.root}/script/runner -e foobar 'XapitSync.sync'")
     XapitSync.start_syncing
   end
 end

@@ -12,7 +12,7 @@ module XapitSync
     if @syncing_proc
       @syncing_proc.call
     else
-      system("#{Rails.root}/script/runner -e #{Rails.env} 'XapitSync.sync(3.minutes)'")
+      system("#{Rails.root}/script/runner -e #{Rails.env} 'XapitSync.sync'")
     end
   end
   
@@ -20,7 +20,7 @@ module XapitSync
     @syncing_proc = nil
   end
   
-  def self.sync(delay = 0)
+  def self.sync(delay = 3.minutes)
     Indexer.new.run(delay)
   end
 end
