@@ -24,6 +24,17 @@ class Recipe < ActiveRecord::Base
   include XapitSync::Membership # TODO this should happen automatically in xapit
 end
 
+# Stub out needed Rails methods since we aren't loading the entire Rails environment here
+class Rails
+  def self.root
+    "/rails/root"
+  end
+  
+  def self.env
+    "test"
+  end
+end
+
 Spec::Runner.configure do |config|
   config.mock_with :rr
 end

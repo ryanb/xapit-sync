@@ -7,8 +7,6 @@ describe XapitSync::Indexer do
   end
   
   it "should have path to pid file" do
-    Rails = Class.new unless defined? Rails
-    stub(Rails).root { "/rails/root" }
     XapitSync::Indexer.pid_path.should == "#{Rails.root}/tmp/xapit_sync.pid"
   end
   

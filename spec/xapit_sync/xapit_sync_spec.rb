@@ -6,10 +6,7 @@ describe XapitSync do
   end
   
   it "should trigger XapitSync.sync through script/runner" do
-    Rails = Class.new unless defined? Rails
-    stub(Rails).root { "/rails/root" }
-    stub(Rails).env { "foobar" }
-    mock(XapitSync).system("#{Rails.root}/script/runner -e foobar 'XapitSync.sync'")
+    mock(XapitSync).system("#{Rails.root}/script/runner -e #{Rails.env} 'XapitSync.sync'")
     XapitSync.start_syncing
   end
 end

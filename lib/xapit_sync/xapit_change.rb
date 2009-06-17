@@ -6,6 +6,8 @@ class XapitChange < ActiveRecord::Base
   end
   
   def start_syncing
-    XapitSync.start_syncing
+    unless XapitSync::Indexer.running?
+      XapitSync.start_syncing
+    end
   end
 end
