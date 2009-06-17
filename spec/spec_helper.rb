@@ -15,7 +15,6 @@ load File.dirname(__FILE__) + '/schema.rb' unless File.exist?(File.dirname(__FIL
 require File.dirname(__FILE__) + '/../lib/xapit_sync'
 
 class Recipe < ActiveRecord::Base
-  include Xapit::Membership # temporary until xapit gem properly does this
   xapit do |index|
     index.text :name
     index.field :name
