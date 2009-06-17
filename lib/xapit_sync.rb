@@ -8,6 +8,18 @@ module XapitSync
   end
   
   def self.call_after_record_change(change)
-    @after_record_change_proc.call(change) if @after_record_change_proc
+    if @after_record_change_proc
+      @after_record_change_proc.call(change)
+    else
+      system("#{Rails.root}/script/runner 'XapitSync.sync(3.minutes)'")
+    end
+  end
+  
+  def self.reset_after_record_change
+    @after_record_change_proc = nil
+  end
+  
+  def self.sync(delay = 0)
+    Processor.new.run(delay)
   end
 end

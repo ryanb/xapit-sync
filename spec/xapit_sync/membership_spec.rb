@@ -1,6 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Recipe do
+  before(:each) do
+    # we don't want to trigger the xapitsync command with these
+    XapitSync.after_record_change { }
+  end
+  
   it "should make xapit change when created" do
     XapitChange.delete_all
     recipe = Recipe.create!(:name => "foo")
