@@ -23,4 +23,18 @@ module XapitSync
   def self.sync(delay = 3.minutes)
     Indexer.new.run(delay)
   end
+  
+  def self.domains
+    @domains || ["localhost:3000"]
+  end
+  
+  def self.domains=(new_domains)
+    @domains = new_domains
+  end
+  
+  def self.reload_domains
+    domains.each do |domain|
+      open("http://#{domain}/xapit/reload")
+    end
+  end
 end
