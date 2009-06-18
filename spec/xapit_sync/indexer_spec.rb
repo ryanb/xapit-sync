@@ -28,11 +28,11 @@ describe XapitSync::Indexer do
   end
   
   it "should create and delete pid file when run" do
-    stub(XapitSync::Indexer).pid_path { "/pid/path" }
+    stub(XapitSync::Indexer).pid_path { "/path/to/pid" }
     indexer = XapitSync::Indexer.new
-    mock(File).open("/pid/path", "w")
+    mock(File).open("/path/to/pid", "w")
     mock(indexer).index_changes(123)
-    mock(File).delete("/pid/path")
+    mock(File).delete("/path/to/pid")
     indexer.run(123)
   end
   

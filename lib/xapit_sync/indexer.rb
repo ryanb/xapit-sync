@@ -2,9 +2,9 @@ module XapitSync
   class Indexer
     def run(delay)
       raise "XapitSync is already running (xapit_sync.pid file exists)." if self.class.running?
-      File.open("/pid/path", "w") { |f| f.puts Process.pid }
+      File.open(self.class.pid_path, "w") { |f| f.puts Process.pid }
       index_changes(delay)
-      File.delete("/pid/path")
+      File.delete(self.class.pid_path)
     end
     
     def self.pid_path
