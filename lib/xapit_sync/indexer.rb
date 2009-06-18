@@ -19,7 +19,7 @@ module XapitSync
       while change = XapitChange.first
         change.update_index
         change.destroy
-        sleep delay if XapitChange.count.zero?
+        sleep delay.to_f if XapitChange.count.zero?
       end
       push_changes
     end
