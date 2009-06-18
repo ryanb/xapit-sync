@@ -12,7 +12,7 @@ module XapitSync
     if @syncing_proc
       @syncing_proc.call
     else
-      system("#{Rails.root}/script/runner -e #{Rails.env} 'XapitSync.sync'")
+      system("#{Rails.root}/script/runner -e #{Rails.env} 'XapitSync.sync' &")
     end
   end
   

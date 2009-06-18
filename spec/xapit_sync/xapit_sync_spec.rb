@@ -6,7 +6,7 @@ describe XapitSync do
   end
   
   it "should trigger XapitSync.sync through script/runner" do
-    mock(XapitSync).system("#{Rails.root}/script/runner -e #{Rails.env} 'XapitSync.sync'")
+    mock(XapitSync).system("#{Rails.root}/script/runner -e #{Rails.env} 'XapitSync.sync' &")
     XapitSync.start_syncing
   end
   
