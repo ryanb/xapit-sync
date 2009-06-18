@@ -21,6 +21,12 @@ module XapitSync
         change.destroy
         sleep delay if XapitChange.count.zero?
       end
+      push_changes
+    end
+    
+    def push_changes
+      Xapit::Config.writable_database.flush
+      XapitSync.reload_domains
     end
   end
 end

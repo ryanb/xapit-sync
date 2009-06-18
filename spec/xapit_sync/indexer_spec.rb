@@ -42,7 +42,15 @@ describe XapitSync::Indexer do
     mock(Recipe.xapit_index_blueprint).create_record(recipe.id)
     indexer = XapitSync::Indexer.new
     mock(indexer).sleep(5)
+    mock(indexer).push_changes
     indexer.index_changes(5)
     XapitChange.count.should == 0
+  end
+  
+  it "should push changes by flushing the database and reloading domains" do
+    mock(Xapit::Config).writable_database.stub!.flush
+    mock(XapitSync).reload_domains
+    indexer = XapitSync::Indexer.new
+    indexer.push_changes
   end
 end
