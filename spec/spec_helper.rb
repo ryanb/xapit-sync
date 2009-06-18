@@ -21,7 +21,6 @@ class Recipe < ActiveRecord::Base
     index.facet :name
     index.sortable :name
   end
-  include XapitSync::Membership # TODO this should happen automatically in xapit
 end
 
 # Stub out needed Rails methods since we aren't loading the entire Rails environment here
