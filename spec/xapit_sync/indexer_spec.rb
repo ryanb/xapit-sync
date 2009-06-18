@@ -39,7 +39,7 @@ describe XapitSync::Indexer do
   it "should loop through all changes and index each of them" do
     XapitChange.delete_all
     recipe = Recipe.create!(:name => "foo")
-    mock(Recipe.xapit_index_blueprint).create_record(recipe)
+    mock(Recipe.xapit_index_blueprint).create_record(recipe.id)
     indexer = XapitSync::Indexer.new
     mock(indexer).sleep(5)
     indexer.index_changes(5)

@@ -12,7 +12,12 @@ class XapitChange < ActiveRecord::Base
   end
   
   def update_index
-    target.class.xapit_index_blueprint.create_record(target)
+    blueprint = target_class.constantize.xapit_index_blueprint
+    case operation
+    when "create" then blueprint.create_record(target_id)
+    when "update" then blueprint.update_record(target_id)
+    when "destroy" then blueprint.destroy_record(target_id)
+    end
   end
   
   def target
