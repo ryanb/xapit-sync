@@ -1,1 +1,1 @@
-require 'xapitsync'
+require 'xapit_sync'
