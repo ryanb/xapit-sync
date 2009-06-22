@@ -52,7 +52,7 @@ You can also disable the syncing process in certain environments. For example:
 
 You'll likely want to customize which domains are triggered when the syncing finishes in order to reload the Xapian database.
 
-  XapitSync.domains = ["http://localhost:8000", ...] if Rails.env.production?
+  XapitSync.domains = ["localhost:8000", "localhost:8001"] if Rails.env.production?
 
 Unfortunately there is not yet a solution to trigger the reloading if you are using Passenger, so you should disable it in that case.
 
