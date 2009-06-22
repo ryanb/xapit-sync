@@ -1,38 +1,39 @@
 = Xapit Sync
 
-IMPORTANT: This project is currently vaporware.
+Rails plugin which extends Xapit to provide automatic syncing of the index.
 
-For an alternative solution (also currently vaporware) see Xapit Server.
+For an alternative solution (currently vaporware) see Xapit Server.
 
 http://github.com/ryanb/xapit-server/tree/master
 
 
-== Xapit
+== Installation
 
-Xapit is a Ruby library for interacting with Xapian, a full-text search engine.
+This plugin assumes you have a Rails application using Xapit. For more information see: http://github.com/ryanb/xapit/tree/master
 
-http://github.com/ryanb/xapit/tree/master
+Install the plugin and run migrations.
+
+  script/plugin install git://github.com/ryanb/xapit-sync.git
+  rake db:migrate
+
+That is all you need to get started in development, but you should see the customize portion below.
 
 
 == How it Works
 
 Xapit Sync is a Rails plugin designed to update only the Xapian records which have changed and then reload the database automatically.
 
-An observer is automatically attached to each Xapian member (model). Each time a model is created, updated, or destroyed it will record that change in a separate database table.
+Each time a Xapit member (model) is created, updated, or destroyed it will record that change in a separate database table.
 
-A separate process will spawn which updates the Xapian database with all changes recorded in the separate table. Everything it needs is in the table so it does not have to launch the Rails environment. This results in a lightweight process that can spawn frequently.
-
-At the end of this process it will trigger a Rails controller/action which is included in the plugin (using Rails metal and/or engines). This will notify the Rails application that the Xapian database needs to be reloaded.
+A separate process will spawn (if it isn't already running) which updates the Xapian database with all changes recorded. At the end of this process it will trigger a Rails controller/action which is included in the plugin (using Rails metal and/or engines). This will notify the Rails application that the Xapian database needs to be reloaded.
 
 
-== Performance
+== Customize
 
-If the application frequently updates models then launching a separate process each time to update the Xapian database will lead to poor performance.
+You will want to customize Xapit Sync to work with your application in production. It is best to do this at the bottom of the setup_xapit.rb initializer file.
 
-To solve this problem the process will automatically wait for one minute after updating the Xapian database to look for more records which need updating before closing and sending the reload request. If a model is changed during this time it will not need to launch a separate process.
+If you have your own queuing system (such as delayed_job) it is better to use that instead of the built-in script runner.
 
-Alternatively, you could tap into a separate queuing system (such as delayed_job) and use that.
-  
   class XapitSyncJob
     def perform
       XapitSync.sync
@@ -44,9 +45,16 @@ Alternatively, you could tap into a separate queuing system (such as delayed_job
     Delayed::Job.enqueue XapitSyncJob.new
   end
 
+You can also disable the syncing process in certain environments. For example:
 
-== Setup
+  XapitSync.override_syncing { } unless Rails.env.production?
 
-To get started, all you must do is install this plugin and run the migrations. This will create the separate table used to keep track of the model changes.
 
-You will also need to configure what Rails processes to send the reload request to. I'm not yet certain how best to do this.
+You'll likely want to customize which domains are triggered when the syncing finishes in order to reload the Xapian database.
+
+  XapitSync.domains = ["http://localhost:8000", ...] if Rails.env.production?
+
+Unfortunately there is not yet a solution to trigger the reloading if you are using Passenger, so you should disable it in that case.
+
+  XapitSync.domains = [] if Rails.env.production?
+
