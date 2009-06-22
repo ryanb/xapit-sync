@@ -33,6 +33,7 @@ module XapitSync
     
     def push_changes
       Xapit::Config.writable_database.flush
+      Xapit::Config.close_database
       XapitSync.reload_domains
     end
   end

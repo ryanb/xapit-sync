@@ -49,6 +49,7 @@ describe XapitSync::Indexer do
   
   it "should push changes by flushing the database and reloading domains" do
     mock(Xapit::Config).writable_database.stub!.flush
+    mock(Xapit::Config).close_database
     mock(XapitSync).reload_domains
     indexer = XapitSync::Indexer.new
     indexer.push_changes
