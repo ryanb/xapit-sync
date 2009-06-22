@@ -16,12 +16,16 @@ module XapitSync
     end
     
     def index_changes(delay)
-      while change = XapitChange.first
-        change.update_index
-        change.destroy
-        sleep delay.to_f if XapitChange.count.zero?
+      while XapitChange.count > 0
+        XapitChange.all.each do |change|
+          change.update_index
+          change.destroy
+        end
+        if XapitChange.count.zero?
+          push_changes
+          sleep delay.to_f
+        end
       end
-      push_changes
     end
     
     def push_changes
